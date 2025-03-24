@@ -14,10 +14,7 @@
         <div class="card mb-4">
             <div class="card-header">
                 <div class="row align-items-center">
-                    <div class="col-md-6">
-                        <h5 class="m-0">Users</h5>
-                    </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Search users..."
                                    @bind-value="SearchTerm" @bind-value:event="oninput" @onkeydown="HandleKeyDown" />
@@ -27,6 +24,14 @@
                                 </button>
                             </div>
                         </div>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" value="@UserType" @onchange="HandleUserTypeChange">
+                            <option value="">All Types</option>
+                            <option value="Member">Member</option>
+                            <option value="Doctor">Doctor</option>
+                            <!-- Other user types -->
+                        </select>
                     </div>
                 </div>
             </div>
@@ -179,6 +184,10 @@
 
     [Parameter, SupplyParameterFromQuery(Name = "asc")]
     public bool IsAscending { get; set; } = true;
+    
+    // Add the new property for UserType
+    [Parameter, SupplyParameterFromQuery(Name = "type")]
+    public string UserType { get; set; } = "";
 
     private int startIndex => (CurrentPage - 1) * PageSize;
 
@@ -204,10 +213,14 @@
         try
         {
             isLoading = true;
-            var url = $"{BaseApiUrl.Url}/users?page={CurrentPage}&size={PageSize}&sortBy={SortField}&isAsc={IsAscending}";
+            var url = $"{BaseApiUrl.Url}/users?page={CurrentPage}&size={PageSize}&sortBy={SortField}&isAsc={IsAscending}&UserType={UserType}";
             if (!string.IsNullOrWhiteSpace(SearchTerm))
             {
                 url += $"&Name={Uri.EscapeDataString(SearchTerm)}";
+            }
+            if (!string.IsNullOrWhiteSpace(UserType))
+            {
+                url += $"&UserType={Uri.EscapeDataString(UserType)}";
             }
 
             var response = await AuthHttp.GetFromJsonAsync<PagingBaseResponse<UserResponse>>(url);
@@ -234,6 +247,14 @@
             isLoading = false;
             StateHasChanged();
         }
+    }
+    
+    // New method to handle filter change
+    private void HandleUserTypeChange(ChangeEventArgs e)
+    {
+        UserType = e.Value.ToString();
+        CurrentPage = 1;
+        NavigateToCurrentState();
     }
 
     private void HandleKeyDown(KeyboardEventArgs e)
@@ -284,6 +305,10 @@
         if (!string.IsNullOrWhiteSpace(SearchTerm))
         {
             url += $"&search={Uri.EscapeDataString(SearchTerm)}";
+        }
+        if (!string.IsNullOrWhiteSpace(UserType))
+        {
+            url += $"&type={Uri.EscapeDataString(UserType)}";
         }
         NavigationManager.NavigateTo(url);
     }
