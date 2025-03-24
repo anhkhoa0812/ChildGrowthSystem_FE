@@ -1,0 +1,27 @@
+﻿@using ChildGrowth.AdminPage.Authentication
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inject NavigationManager Navigation
+@inject ILocalStorageService LocalStorage
+@inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager NavigationManager
+
+<AuthorizeView>
+    <Authorized>
+        Hello, @context.User.Identity?.Name!
+        <button class="nav-link btn btn-link" @onclick="BeginLogOut">Log out</button>
+    </Authorized>
+    <NotAuthorized>
+        <a href="login">Log in</a>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code{
+
+    private async Task BeginLogOut()
+    {
+        await LocalStorage.RemoveItemAsync("authToken");
+        ((CustomAuthStateProvider)AuthStateProvider).NotifyUserLogout();
+        NavigationManager.NavigateTo("/");
+    }
+
+}

@@ -1,0 +1,38 @@
+﻿@using ChildGrowth.AdminPage.Models
+
+<div class="modal fade show" style="display: block; background-color: rgba(0,0,0,0.5);" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">User Details - @User.Username</h5>
+                <button type="button" class="close" @onclick="OnClose">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><strong>ID:</strong> @User.UserId</p>
+                <p><strong>Username:</strong> @User.Username</p>
+                <p><strong>Email:</strong> @User.Email</p>
+                <p><strong>Full Name:</strong> @User.FullName</p>
+                <p><strong>User Type:</strong> @User.UserType</p>
+                <p><strong>Status:</strong> @User.Status</p>
+                <p><strong>Created At:</strong> @User.CreatedAt?.ToString("yyyy-MM-dd")</p>
+                <!-- Add more fields as needed -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="OnClose">Close</button>
+                <button type="button" class="btn btn-primary" @onclick="() => EditUser(User.UserId)">Edit User</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public UserResponse User { get; set; }
+    [Parameter] public EventCallback OnClose { get; set; }
+
+    private void EditUser(int userId)
+    {
+        Console.WriteLine($"Editing user {userId}");
+    }
+}
