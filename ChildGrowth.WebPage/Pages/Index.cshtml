@@ -1,10 +1,124 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Home - Child Growth Tracker";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- HERO SECTION with background image -->
+<div class="jumbotron jumbotron-fluid text-white"
+     style="background: url('~/images/hero.jpg') no-repeat center center; background-size: cover;">
+    <div class="container py-5 text-center">
+        <h1 class="display-3">Empower Your Child's Growth Journey</h1>
+        <p class="lead">Track, analyze, and consult with experts for a healthy future.</p>
+        <a class="btn btn-primary btn-lg mr-2" asp-page="/Membership" role="button">Explore Membership</a>
+        <a class="btn btn-outline-light btn-lg" asp-page="/GrowthTracking" role="button">Start Tracking</a>
+    </div>
+</div>
+
+<!-- FEATURES SECTION -->
+<div class="container my-5">
+    <div class="row">
+        <!-- Growth Tracking -->
+        <div class="col-md-4 text-center mb-4">
+            <img src="~/images/icon-tracking.png" alt="Tracking Icon"
+                 class="mb-3" style="width:80px;height:80px;">
+            <h4>Growth Tracking</h4>
+            <p>Monitor weight, height, and BMI with interactive charts and real-time alerts.</p>
+            <a class="btn btn-outline-primary" asp-page="/GrowthTracking">Learn More</a>
+        </div>
+        <!-- Membership Plans -->
+        <div class="col-md-4 text-center mb-4">
+            <img src="~/images/icon-membership.png" alt="Membership Icon"
+                 class="mb-3" style="width:80px;height:80px;">
+            <h4>Membership Plans</h4>
+            <p>Choose a plan that suits your needs and unlock exclusive features and consultations.</p>
+            <a class="btn btn-outline-success" asp-page="/Membership">View Plans</a>
+        </div>
+        <!-- Consultation -->
+        <div class="col-md-4 text-center mb-4">
+            <img src="~/images/icon-consult.png" alt="Consult Icon"
+                 class="mb-3" style="width:80px;height:80px;">
+            <h4>Expert Consultation</h4>
+            <p>Request professional advice and feedback from certified pediatricians and nutritionists.</p>
+            <a class="btn btn-outline-info" asp-page="/Consultation">Get Advice</a>
+        </div>
+    </div>
+</div>
+
+<!-- MORE FEATURES / BLOG / FAQ / DASHBOARD -->
+<div class="py-5 text-center bg-light">
+    <h2>More Features</h2>
+    <p>Stay informed with our blog, share data with doctors, manage your child's growth history, and more!</p>
+    <div class="mt-4">
+        <a class="btn btn-success mr-2" asp-page="/Blog" role="button">Visit Blog</a>
+        <a class="btn btn-info mr-2" asp-page="/FAQ" role="button">Read FAQ</a>
+        <a class="btn btn-warning" asp-page="/Dashboard" role="button">Go to Dashboard</a>
+    </div>
+</div>
+
+<!-- PRICING SECTION -->
+<div class="container my-5">
+    <h2 class="text-center mb-4">Membership Pricing</h2>
+    <div class="row">
+        <!-- Basic Plan -->
+        <div class="col-md-4">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header text-center">
+                    <h4 class="my-0 font-weight-normal">Basic</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title">$9.99 <small class="text-muted">/ month</small></h1>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>Basic growth tracking</li>
+                        <li>Standard alerts</li>
+                        <li>Email support</li>
+                    </ul>
+                    <a asp-page="/Membership/Subscribe" asp-route-plan="Basic"
+                       class="btn btn-lg btn-block btn-outline-primary">
+                        Sign up
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- Premium Plan -->
+        <div class="col-md-4">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header text-center">
+                    <h4 class="my-0 font-weight-normal">Premium</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title">$19.99 <small class="text-muted">/ month</small></h1>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>All Basic features</li>
+                        <li>Advanced charts & analytics</li>
+                        <li>Priority doctor consultation</li>
+                    </ul>
+                    <a asp-page="/Membership/Subscribe" asp-route-plan="Premium"
+                       class="btn btn-lg btn-block btn-primary">
+                        Sign up
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- Elite Plan -->
+        <div class="col-md-4">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header text-center">
+                    <h4 class="my-0 font-weight-normal">Elite</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title">$29.99 <small class="text-muted">/ month</small></h1>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>All Premium features</li>
+                        <li>1-on-1 pediatric sessions</li>
+                        <li>Exclusive nutrition plans</li>
+                    </ul>
+                    <a asp-page="/Membership/Subscribe" asp-route-plan="Elite"
+                       class="btn btn-lg btn-block btn-primary">
+                        Sign up
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
