@@ -1,0 +1,213 @@
+@page
+@model DoctorPage.Pages.Doctor.Index
+@{
+    ViewData["Title"] = "Doctor Dashboard";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <!-- Bootstrap CSS (if not already in your Layout) -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <!-- Chart.js from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 15px;
+        }
+        .stat-card {
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            transition: transform 0.2s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
+        .stat-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            color: #f6ad55; /* Light orange color */
+        }
+        .stat-title {
+            font-size: 1rem;
+            color: #6c757d; /* Gray color for the title */
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        /* Chart container */
+        .chart-card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-top: 30px;
+        }
+        .chart-card h3 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        /* Month selector styling */
+        .month-selector {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: flex-end;
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard-container">
+    <!-- Statistics Row -->
+    <div class="row">
+        <!-- Card 1 -->
+        <div class="col-md-3">
+            <div class="stat-card">
+                <span class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </span>
+                <div class="stat-title">Tổng số tư vấn</div>
+                <div class="stat-value">@Model.DoctorDashboardResponse.AllConsultationTodayCount</div>
+            </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="col-md-3">
+            <div class="stat-card">
+                <span class="stat-icon">
+                    <i class="fas fa-user-plus"></i>
+                </span>
+                <div class="stat-title">Tư vấn đang yêu cầu</div>
+                <div class="stat-value">@Model.DoctorDashboardResponse.PendingConsultationTodayCount</div>
+            </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="col-md-3">
+            <div class="stat-card">
+                <span class="stat-icon">
+                    <i class="fas fa-edit"></i>
+                </span>
+                <div class="stat-title">Tư vấn đã chia sẻ data</div>
+                <div class="stat-value">@Model.DoctorDashboardResponse.SharedDataConsultationTodayCount</div>
+            </div>
+        </div>
+        <!-- Card 4 -->
+        <div class="col-md-3">
+            <div class="stat-card">
+                <span class="stat-icon">
+                    <i class="fas fa-flag-checkered"></i>
+                </span>
+                <div class="stat-title">Tư vấn thành công</div>
+                <div class="stat-value">@Model.DoctorDashboardResponse.CompletedConsultationTodayCount</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart Section -->
+    <div class="chart-card">
+        <h3>Consultation Status Overview</h3>
+
+        <!-- Month Selector -->
+        <form method="get" class="form-inline">
+        <div class="month-selector">
+            <select id="SelectedMonth" name="SelectedMonth" style="width: 200px;" onchange="this.form.submit()">
+                @for (int m = 1; m <= DateTime.Now.Month; m++)
+                {
+                    if (m == Model.SelectedMonth) 
+                    {
+                        <option value="@m" selected="selected">Tháng @m</option>
+                    }
+                    else
+                    {
+                        <option value="@m">Tháng @m</option>
+                    }
+                }
+            </select>
+        </div>
+        </form>
+
+        <canvas id="statusChart" width="400" height="150"></canvas>
+    </div>
+</div>
+
+<script>
+    // Hard-coded data for each month (Pending, Approved, Rejected)
+    // Replace these with real data if needed
+    var completed = @Model.DoctorDashboardResponse.ByMonth.CompletedConsultationCount;
+    var userRejected = @Model.DoctorDashboardResponse.ByMonth.RejectedConsultationCount;
+    var doctorRejected = @Model.DoctorDashboardResponse.ByMonth.CancelledConsultationCount;
+
+    // Initial chart data
+    var consultationData = {
+        labels: ['Thành công', 'Người dùng từ chối', 'Bác sĩ từ chối'],
+        datasets: [{
+            data: [completed, userRejected, doctorRejected],
+            backgroundColor: [
+                'rgba(255, 206, 86, 0.6)',
+                'rgba(75, 192, 192, 0.6)',  
+                'rgba(255, 99, 132, 0.6)'  
+            ],
+            borderColor: [
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(255, 99, 132, 1)'
+            ],
+            borderWidth: 1
+        }]
+    };
+
+    // Create the chart
+    var ctx = document.getElementById('statusChart').getContext('2d');
+    var statusChart = new Chart(ctx, {
+        type: 'bar',
+        data: consultationData,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                title: {
+                    display: false
+                }
+            }
+        }
+    });
+
+    // Function to update chart when the user selects a month
+    function updateChart() {
+        var selectedMonth = document.getElementById('monthSelect').value;
+        var data = monthlyData[selectedMonth];
+        statusChart.data.datasets[0].data = data;
+        statusChart.update();
+    }
+</script>
+
+<!-- Font Awesome (for icons) -->
+@* <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script> *@
+</body>
+</html>

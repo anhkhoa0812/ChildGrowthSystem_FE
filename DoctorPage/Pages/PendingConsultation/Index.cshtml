@@ -1,0 +1,86 @@
+@page
+@model DoctorPage.Pages.PendingConsultation.Index
+
+@{
+    ViewData["Title"] = "Pending Consultations";
+}
+
+<h1>Pending Consultations</h1>
+
+@if (Model.ConsultationResponse != null && Model.ConsultationResponse.Items.Any())
+{
+    <p>
+        Showing @((Model.ConsultationResponse.Page - 1) * Model.ConsultationResponse.Size + 1) to 
+        @(Math.Min(Model.ConsultationResponse.Page * Model.ConsultationResponse.Size, Model.ConsultationResponse.Total)) 
+        of @Model.ConsultationResponse.Total consultations.
+    </p>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Consultation ID</th>
+                <th>Parent Name</th>
+                <th>Request Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var consultation in Model.ConsultationResponse.Items)
+            {
+                <tr>
+                    <td>@consultation.ConsultationId</td>
+                    <td>@consultation.Parent.FullName</td>
+                    <td>@consultation.RequestDate.ToString("g")</td>
+                    <td>@consultation.Status</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Pagination Controls -->
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            @if (Model.ConsultationResponse.Page > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-route-page="@(Model.ConsultationResponse.Page - 1)" asp-route-size="@Model.Size">Previous</a>
+                </li>
+            }
+            @for (int i = 1; i <= Model.ConsultationResponse.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.ConsultationResponse.Page ? "active" : "")">
+                    <a class="page-link" asp-route-page="@i" asp-route-size="@Model.Size">@i</a>
+                </li>
+            }
+            @if (Model.ConsultationResponse.Page < Model.ConsultationResponse.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-route-page="@(Model.ConsultationResponse.Page + 1)" asp-route-size="@Model.Size">Next</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}
+else if (Model.ConsultationResponse != null && !Model.ConsultationResponse.Items.Any())
+{
+    <p>No pending consultations found.</p>
+}
+else
+{
+    <div class="alert alert-danger">
+        <p>Unable to load consultations.</p>
+        @if (Model.ModelState.ContainsKey(string.Empty))
+        {
+            <ul>
+                @foreach (var error in Model.ModelState[string.Empty].Errors)
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            </ul>
+        }
+    </div>
+}
+
+@section Scripts {
+    <!-- Optional: Add Bootstrap or custom JS if needed -->
+}
