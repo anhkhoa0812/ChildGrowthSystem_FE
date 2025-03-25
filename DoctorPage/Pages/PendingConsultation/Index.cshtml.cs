@@ -15,17 +15,17 @@ namespace  DoctorPage.Pages.PendingConsultation
         }
 
         [BindProperty(SupportsGet = true)]
-        public int Page { get; set; } = 1;
+        public int PageIndex { get; set; } = 1;
 
         [BindProperty(SupportsGet = true)]
-        public int Size { get; set; } = 2;
+        public int Size { get; set; } = 5;
 
         public PaginatedConsultationResponse ConsultationResponse { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
             // Construct the API URL with query parameters
-            var apiUrl = $"https://localhost:7063/api/v1/consultations/pending?page={Page}&size={Size}&isAsc=false";
+            var apiUrl = $"https://localhost:7063/api/v1/consultations/pending?page={PageIndex}&size={Size}&isAsc=false";
             var token = HttpContext.Session.GetString("Token");
             if (string.IsNullOrEmpty(token))
             {
