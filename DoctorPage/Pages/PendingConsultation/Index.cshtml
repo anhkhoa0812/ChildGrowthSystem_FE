@@ -7,6 +7,15 @@
 
 <h1>Pending Consultations</h1>
 
+<p>Debug Info:</p>
+<ul>
+    <li>URL Page: @Model.Page</li>
+    <li>API Response Page: @Model.ConsultationResponse?.Page</li>
+    <li>Total Pages: @Model.ConsultationResponse?.TotalPages</li>
+    <li>Total Items: @Model.ConsultationResponse?.Total</li>
+    <li>Items Count: @Model.ConsultationResponse?.Items?.Count()</li>
+</ul>
+
 @if (Model.ConsultationResponse != null && Model.ConsultationResponse.Items.Any())
 {
     <p>
@@ -43,19 +52,19 @@
             @if (Model.ConsultationResponse.Page > 1)
             {
                 <li class="page-item">
-                    <a class="page-link" asp-route-page="@(Model.ConsultationResponse.Page - 1)" asp-route-size="@Model.Size">Previous</a>
+                    <a class="page-link" href="/PendingConsultation?pageIndex=@(Model.ConsultationResponse.Page - 1)">Previous</a>
                 </li>
             }
             @for (int i = 1; i <= Model.ConsultationResponse.TotalPages; i++)
             {
                 <li class="page-item @(i == Model.ConsultationResponse.Page ? "active" : "")">
-                    <a class="page-link" asp-route-page="@i" asp-route-size="@Model.Size">@i</a>
+                    <a class="page-link" href="/PendingConsultation?pageIndex=@i" >@i</a>
                 </li>
             }
             @if (Model.ConsultationResponse.Page < Model.ConsultationResponse.TotalPages)
             {
                 <li class="page-item">
-                    <a class="page-link" asp-route-page="@(Model.ConsultationResponse.Page + 1)" asp-route-size="@Model.Size">Next</a>
+                    <a class="page-link" href="/PendingConsultation?pageIndex=@(Model.ConsultationResponse.Page + 1)">Next</a>
                 </li>
             }
         </ul>

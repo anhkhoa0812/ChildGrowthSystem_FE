@@ -6,7 +6,6 @@ public class DoctorDashboardResponse
     public int PendingConsultationTodayCount { get; set; }
     public int SharedDataConsultationTodayCount { get; set; }
     public int CompletedConsultationTodayCount { get; set; }
-    
     public DoctorDashboardResponseByMonth ByMonth { get; set; }
 }
 
