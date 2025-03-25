@@ -10,4 +10,12 @@
       <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.6.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="wwwroot\images\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="Pages\Membership.cshtml" />
+    </ItemGroup>
+
 </Project>
