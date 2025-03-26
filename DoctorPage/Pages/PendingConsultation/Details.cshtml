@@ -1,0 +1,27 @@
+@page
+@model DoctorPage.Pages.PendingConsultation.Details
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-info text-white">
+            <h1 class="mb-0">Consultation Details</h1>
+        </div>
+        <div class="card-body">
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Consultation.ConsultationId)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Consultation.ConsultationId)</dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Consultation.Parent)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Consultation.Parent.FullName)</dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Consultation.RequestDate)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Consultation.RequestDate)</dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Consultation.Status)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Consultation.Status)</dd>
+            </dl>
+            <form method="post" asp-page-handler="Approve">
+                <input type="hidden" name="consultationId" value="@Model.Consultation.ConsultationId" />
+                <button type="submit" class="btn btn-success">Approve</button>
+            </form>
+        </div>
+    </div>
+</div>

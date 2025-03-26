@@ -1,0 +1,62 @@
+@page
+@model DoctorPage.Pages.Consultations.Details
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-info text-white">
+            <h1 class="mb-0">Consultation Details</h1>
+        </div>
+        <div class="card-body">
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Consultation.ConsultationId)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Consultation.ConsultationId)</dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Consultation.Parent)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Consultation.Parent.FullName)</dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Consultation.Child)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Consultation.Child.FullName)</dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Consultation.ConsultationType)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Consultation.ConsultationType)</dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Consultation.RequestDate)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Consultation.RequestDate)</dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Consultation.FollowUpDate)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Consultation.FollowUpDate)</dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Consultation.Priority)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Consultation.Priority)</dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Consultation.Status)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Consultation.Status)</dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Consultation.Description)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Consultation.Description)</dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Consultation.Rating)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Consultation.Description)</dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Consultation.Feedback)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Consultation.Feedback)</dd>
+            </dl>
+            @if(Model.Consultation.Status == "Approved")
+            {
+                <!-- Form for Approved: Request Child Data -->
+                <form method="post" asp-page-handler="RequestChildData">
+                    <div class="mt-3">
+                        <input type="hidden" name="ConsultationId" value="@Model.Consultation.ConsultationId" />
+                        <div class="mt-3">
+                            <button type="submit" class="btn btn-primary">Request Child Data</button>
+                        </div>
+                    </div>
+                </form>
+            }
+            else if(Model.Consultation.Status == "SharedData")
+            {
+                <!-- Form for SharedData: Submit Response -->
+                <form method="post" asp-page-handler="Response">
+                    <input type="hidden" name="ConsultationId" value="@Model.Consultation.ConsultationId" />
+                    <div class="mt-3">
+                        <div class="mb-2">
+                            <input type="text" name="Response" class="form-control" placeholder="Enter Response" />
+                        </div>
+                        <button type="submit" class="btn btn-success">Response</button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>
