@@ -11,85 +11,87 @@
             background-color: #007bff !important;
         }
 
-            .navbar .nav-link {
-                color: white !important;
-                font-weight: 500;
-            }
+        .navbar .nav-link {
+            color: white !important;
+            font-weight: 500;
+        }
 
-                .navbar .nav-link:hover {
-                    background: rgba(255, 255, 255, 0.2);
-                    border-radius: 5px;
-                }
+        .navbar .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+        }
 
         .btn-login {
             border: 2px solid white;
             color: white !important;
         }
 
-            .btn-login:hover {
-                background: white;
-                color: #007bff !important;
-            }
+        .btn-login:hover {
+            background: white;
+            color: #007bff !important;
+        }
     </style>
 </head>
 <body>
-    <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-primary bg-primary">
-        <a class="navbar-brand text-white" asp-page="/Index">Child Growth Tracker</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
-                aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-primary bg-primary">
+    <a class="navbar-brand text-white" asp-page="/Index">Child Growth Tracker</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
+            aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <div class="collapse navbar-collapse" id="navbarContent">
-            <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" asp-page="/Membership">Membership</a></li>
-                <li class="nav-item"><a class="nav-link" asp-page="/GrowthTracking">Growth Tracking</a></li>
-                <li class="nav-item"><a class="nav-link" asp-page="/Consultation">Consultation</a></li>
-                <li class="nav-item"><a class="nav-link" asp-page="/Blog">Blog</a></li>
-                <li class="nav-item"><a class="nav-link" asp-page="/FAQ">FAQ</a></li>
-            </ul>
+    <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" asp-page="/MembershipPlan">Membership</a></li>
+            <li class="nav-item"><a class="nav-link" asp-page="/GrowthTracking">Growth Tracking</a></li>
+            <li class="nav-item"><a class="nav-link" asp-page="/Consultation">Consultation</a></li>
+            <li class="nav-item"><a class="nav-link" asp-page="/Blog">Blog</a></li>
+            <li class="nav-item"><a class="nav-link" asp-page="/FAQ">FAQ</a></li>
+        </ul>
 
-            <!-- LOGIN / USER INFO - Đưa ra ngoài ul.navbar-nav để căn phải -->
-            <div class="ml-auto">
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button" data-toggle="dropdown">
-                            <i class="fas fa-user"></i> @User.Identity.Name
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" asp-page="/Profile">Profile</a>
-                            <a class="dropdown-item text-danger" asp-page="/Logout">Logout</a>
-                        </div>
-                    </div>
-                }
-                else
-                {
-                    <a class="btn btn-outline-light btn-login" asp-page="/Login">Login / Register</a>
-                }
-            </div>
-        </div>
-    </nav>
-
-    <!-- MAIN CONTENT -->
-    <div class="container mt-4">
-        @RenderBody()
+        <!-- LOGIN / USER INFO -->
+        <ul class="navbar-nav ml-auto">
+            @if (User.Identity.IsAuthenticated)
+            {
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button" data-toggle="dropdown">
+                    <i class="fas fa-user"></i> @User.Identity.Name
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" asp-page="/Profile">Profile</a>
+                    <a class="dropdown-item text-danger" asp-page="/Logout">Logout</a>
+                </div>
+            </li>
+            }
+            else
+            {
+            <li class="nav-item">
+                <a class="btn btn-outline-light btn-login" asp-page="/Login">Login</a>
+            </li>
+            }
+        </ul>
     </div>
+</nav>
 
-    <!-- FOOTER -->
-    <footer class="footer bg-primary text-white py-4 mt-5">
-        <div class="container text-center">
-            <p>&copy; 2025 Child Growth Tracker. All rights reserved.</p>
-            <a asp-page="/About" class="text-light mr-3">About Us</a>
-            <a asp-page="/Contact" class="text-light">Contact</a>
-        </div>
-    </footer>
+<!-- MAIN CONTENT -->
+<div class="container mt-4">
+    @RenderBody()
+</div>
 
-    <!-- Scripts -->
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-    @RenderSection("Scripts", required: false)
+<!-- FOOTER -->
+<footer class="footer bg-primary text-white py-4 mt-5">
+    <div class="container text-center">
+        <p>&copy; 2025 Child Growth Tracker. All rights reserved.</p>
+        <a asp-page="/About" class="text-light mr-3">About Us</a>
+        <a asp-page="/Contact" class="text-light">Contact</a>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+@RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -1,0 +1,138 @@
+﻿@page
+@model ChildGrowth.WebPage.Pages.MembershipPlanModel
+@{
+    ViewData["Title"] = "Membership Plans - Child Growth Tracker";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/site.css">
+    <style>
+        .navbar {
+            background-color: #007bff !important;
+        }
+        .navbar .nav-link {
+            color: white !important;
+            font-weight: 500;
+        }
+        .navbar .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+        }
+        .btn-login {
+            border: 2px solid white;
+            color: white !important;
+        }
+        .btn-login:hover {
+            background: white;
+            color: #007bff !important;
+        }
+        .jumbotron {
+            background: url('~/images/hero.jpg') no-repeat center center;
+            background-size: cover;
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+        }
+        .card-body {
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 350px;
+        }
+        .card-title {
+            color: #007bff;
+        }
+        .btn-outline-primary {
+            border-color: #007bff;
+            color: #007bff;
+        }
+        .btn-outline-primary:hover {
+            background-color: #007bff;
+            color: white;
+        }
+        .pricing-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .pricing-card {
+            flex: 1 1 300px;
+            max-width: 350px;
+        }
+    </style>
+</head>
+<body>
+<div class="jumbotron jumbotron-fluid text-white text-center py-5">
+    <div class="container">
+        <h1 class="display-4">Elevate Your Child's Health Journey</h1>
+        <p class="lead">Choose a plan that unlocks premium features, expert consultations, and more.</p>
+        <a class="btn btn-primary btn-lg mr-2" asp-page="/Register">Sign Up Now</a>
+        <a class="btn btn-outline-light btn-lg" asp-page="/GrowthTracking">Explore Features</a>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="text-center mb-4">
+        <h2>Membership Plans</h2>
+        <p class="text-muted">Choose the best plan for your child's health and growth tracking.</p>
+    </div>
+    <div class="pricing-container">
+        @foreach (var plan in Model.MembershipPlans)
+        {
+        <div class="card pricing-card text-center">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">@plan.PlanName</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title pricing-card-title">$@((plan.Price / 100).ToString("F2")) <small class="text-muted">/ month</small></h1>
+                <ul class="list-unstyled mt-3 mb-4">
+                    @foreach (var feature in plan.Features.Split(','))
+                    {
+                    <li>@feature.Trim()</li>
+                    }
+                </ul>
+                <a asp-page="@(Model.IsSignedIn ? "/MembershipPlan/Subscribe" : "/Register")" asp-route-plan="@plan.PlanName" class="btn btn-lg btn-outline-primary">
+                    @(Model.IsSignedIn ? "Subscribe" : "Sign Up")
+                </a>
+            </div>
+        </div>
+        }
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <h3>Why Choose Our Membership?</h3>
+            <ul>
+                <li>Monitor multiple children at once</li>
+                <li>Receive early alerts on abnormal growth patterns</li>
+                <li>Share growth data with doctors anytime</li>
+                <li>Access detailed consultation history and health records</li>
+            </ul>
+        </div>
+        <div class="col-md-6 text-center">
+            <img src="~/images/family-checkup.jpg" alt="Family Checkup" class="img-fluid rounded shadow-lg">
+        </div>
+    </div>
+</div>
+
+<div class="py-5 text-center bg-light">
+    <h2>Start Your Child's Health Journey Today</h2>
+    <p>Join our platform and ensure your child's growth is on the right track.</p>
+    <a class="btn btn-success btn-lg" asp-page="/Membership/Subscribe" asp-route-plan="Premium">Upgrade Now</a>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
