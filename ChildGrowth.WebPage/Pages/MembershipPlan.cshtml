@@ -100,7 +100,7 @@
                     <li>@feature.Trim()</li>
                     }
                 </ul>
-                <a asp-page="@(Model.IsSignedIn ? "/MembershipPlan/Subscribe" : "/Register")" asp-route-plan="@plan.PlanName" class="btn btn-lg btn-outline-primary">
+                <a asp-page="@(Model.IsSignedIn ? "/MembershipPlan/Subscribe" : "/Register")" asp-route-planId="@plan.PlanId" class="btn btn-lg btn-outline-primary">
                     @(Model.IsSignedIn ? "Subscribe" : "Sign Up")
                 </a>
             </div>
