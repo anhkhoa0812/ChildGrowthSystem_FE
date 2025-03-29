@@ -1,4 +1,5 @@
 ﻿@page
+@using ChildGrowth.WebPage.ApiEndpoint
 @model ChildGrowth.WebPage.Pages.Register
 @{
 ViewData["Title"] = "Register - Child Growth Tracker";
@@ -73,6 +74,7 @@ ViewData["Title"] = "Register - Child Growth Tracker";
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 <script>
+    const apiBaseUrl = '@ApiEndpointUrl.Url';
     document.getElementById('registerForm').addEventListener('submit', async function (e) {
         e.preventDefault();
         const userType = 'Member';
@@ -85,7 +87,7 @@ ViewData["Title"] = "Register - Child Growth Tracker";
         const dateOfBirth = document.getElementById('dateOfBirth').value;
         const gender = document.getElementById('gender').value;
 
-        const response = await fetch('https://localhost:44329/api/v1/users/signup', {
+        const response = await fetch(apiBaseUrl + 'users/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -103,5 +105,6 @@ ViewData["Title"] = "Register - Child Growth Tracker";
             errorMessageDiv.classList.remove('d-none');
         }
     });
+
 </script>
 }
