@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using a;
+using ChildGrowth.WebPage.ApiEndpoint;
 using ChildGrowth.WebPage.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -24,7 +25,7 @@ public class Login : PageModel
         {
             using (var httpClient = new HttpClient())
             {
-                var response = await httpClient.PostAsJsonAsync("https://localhost:44329/api/v1/users/signin", LoginRequest);
+                var response = await httpClient.PostAsJsonAsync($"{ApiEndpointUrl.Url}users/signin", LoginRequest);
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadFromJsonAsync<LoginResponse>();

@@ -1,4 +1,5 @@
-﻿using ChildGrowth.WebPage.Dto;
+﻿using ChildGrowth.WebPage.ApiEndpoint;
+using ChildGrowth.WebPage.Dto;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 
@@ -11,7 +12,7 @@ public class GrowthRecord : PageModel
     {
         var childId = "2"; // Replace with actual child ID
         var chartMode = "Last12Months"; // or "YearlyAverage"
-        var url = $"https://localhost:7063/api/v1/children/{childId}/growth-record-data-chart?mode={chartMode}";
+        var url = $"{ApiEndpointUrl.Url}children/{childId}/growth-record-data-chart?mode={chartMode}";
 
         using (var httpClient = new HttpClient())
         {

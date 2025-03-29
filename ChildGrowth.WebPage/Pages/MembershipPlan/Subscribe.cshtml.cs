@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using ChildGrowth.WebPage.ApiEndpoint;
 using ChildGrowth.WebPage.Dto.User;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -22,7 +23,7 @@ namespace ChildGrowth.WebPage.Pages.MembershipPlan
             using (var httpClient = new HttpClient())
             {
                 httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-                var response = await httpClient.GetFromJsonAsync<UserInfo>($"https://localhost:44329/api/v1/users/{userId}");
+                var response = await httpClient.GetFromJsonAsync<UserInfo>($"{ApiEndpointUrl.Url}users/{userId}");
                 User = response;
             }
         }
@@ -34,7 +35,7 @@ namespace ChildGrowth.WebPage.Pages.MembershipPlan
             using (var httpClient = new HttpClient())
             {
                 httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-                var response = await httpClient.PutAsJsonAsync($"https://localhost:44329/api/v1/users/{userId}", User);
+                var response = await httpClient.PutAsJsonAsync($"{ApiEndpointUrl.Url}users/{userId}", User);
                 if (response.IsSuccessStatusCode)
                 {
                     var paymentRequest = new
@@ -44,7 +45,7 @@ namespace ChildGrowth.WebPage.Pages.MembershipPlan
                         autoRenew = false
                     };
 
-                    var paymentResponse = await httpClient.PostAsJsonAsync("https://localhost:44329/api/v1/payments", paymentRequest);
+                    var paymentResponse = await httpClient.PostAsJsonAsync($"{ApiEndpointUrl.Url}payments", paymentRequest);
                     if (paymentResponse.IsSuccessStatusCode)
                     {
                         var paymentLink = await paymentResponse.Content.ReadAsStringAsync();
