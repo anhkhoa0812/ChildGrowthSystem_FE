@@ -1,8 +1,9 @@
-﻿@page
+﻿@page "{id}"
 @model ChildGrowth.WebPage.Pages.GrowthRecord
-
 @{
     ViewData["Title"] = "GrowthRecord page";
+    // Get chart mode from query string, defaulting to "Last12Months"
+    var chartModeSelected = !string.IsNullOrEmpty(Model.ChartMode) ? Model.ChartMode : "Last12Months";
 }
 
 <!DOCTYPE html>
@@ -17,12 +18,47 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 </head>
 <body>
-<div class="container">
+<div class="container mt-4">
+    <!-- Select box for Chart Mode -->
+    <div class="form-group">
+        <label for="chartModeSelect">Select Chart Mode:</label>
+        <select id="chartModeSelect" class="form-control" onchange="changeChartMode(this)">
+            @if (chartModeSelected == "Last12Months")
+            {
+                <option value="Last12Months" selected>Last 12 Months</option>
+            }
+            else
+            {
+                <option value="Last12Months">Last 12 Months</option>
+            }
+
+            @if (chartModeSelected == "YearlyAverage")
+            {
+                <option value="YearlyAverage" selected>Yearly Average</option>
+            }
+            else
+            {
+                <option value="YearlyAverage">Yearly Average</option>
+            }
+        </select>
+
+    </div>
+
     <!-- Canvas for the Chart.js chart -->
     <canvas id="growthChart" width="800" height="400"></canvas>
 </div>
+
 <script>
-    // Note the capitalized property names.
+    // Reload page with new mode when selection changes
+    function changeChartMode(select) {
+        var selectedMode = select.value;
+        // Construct new URL with existing child id and new mode query parameter
+        var url = new URL(window.location);
+        url.searchParams.set('mode', selectedMode);
+        window.location.href = url.toString();
+    }
+
+    // Chart data from the model
     const chartData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.ChartData));
     console.log("Chart Data:", chartData); // Debug the data
 
@@ -31,11 +67,7 @@
     const bmiValues = chartData.Data.map(item => item.Bmi);
     const heightValues = chartData.Data.map(item => item.Height);
     const weightValues = chartData.Data.map(item => item.Weight);
-    
-    console.log("Dates ",dates);
-    console.log("BMI ",bmiValues);
-    console.log("Height ",heightValues);
-    console.log("Weight ",weightValues);
+
     // Get the canvas context
     const ctx = document.getElementById('growthChart').getContext('2d');
 
@@ -107,5 +139,3 @@
 
 </body>
 </html>
-
-
