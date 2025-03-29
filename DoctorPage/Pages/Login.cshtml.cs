@@ -38,6 +38,8 @@ public class LoginModel : PageModel
                     {
                         throw new Exception("You can not access the system");
                     }
+                    var username = jwtToken.Claims.First(claim => claim.Type == ClaimTypes.Name).Value;
+                    HttpContext.Session.SetString("Username", username);
                     return RedirectToPage("/Doctor/Index");
                 }
                 else
