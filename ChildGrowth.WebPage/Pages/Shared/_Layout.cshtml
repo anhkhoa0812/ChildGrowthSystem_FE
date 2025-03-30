@@ -1,4 +1,4 @@
-﻿@* Pages/Shared/_Layout.cshtml *@
+﻿<!-- Trong _Layout.cshtml -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,29 +6,82 @@
     <title>@ViewData["Title"] - Child Growth Tracker</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    
     <style>
+        #notificationCount {
+            position: absolute;
+            top: 0px; /* Điều chỉnh vị trí theo nhu cầu */
+            right: -5px; /* Đưa số ra ngoài góc một chút */
+            background-color: #dc3545; /* Màu đỏ đậm */
+            color: white;
+            font-size: 14px; /* Tăng kích thước chữ */
+            font-weight: bold;
+            padding: 3px 7px; /* Điều chỉnh kích thước */
+            border-radius: 50%; /* Giúp bo tròn thành hình tròn */
+            display: none; /* Ẩn nếu không có thông báo */
+        }
+
         .navbar {
             background-color: #007bff !important;
         }
-
         .navbar .nav-link {
             color: white !important;
             font-weight: 500;
         }
-
         .navbar .nav-link:hover {
             background: rgba(255, 255, 255, 0.2);
             border-radius: 5px;
         }
-
         .btn-login {
             border: 2px solid white;
             color: white !important;
         }
-
         .btn-login:hover {
             background: white;
             color: #007bff !important;
+        }
+    </style>
+    <style>
+        .notification-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #007bff;
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .notification-container:hover {
+            background: #0056b3;
+        }
+
+        .notification-container .badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: red;
+            color: white;
+            border-radius: 50%;
+            padding: 5px 8px;
+            font-size: 12px;
+            display: none;
+        }
+
+        .dropdown-menu-notification {
+            position: absolute;
+            bottom: 60px;
+            right: 20px;
+            min-width: 300px;
         }
     </style>
 </head>
@@ -52,23 +105,44 @@
 
         <!-- LOGIN / USER INFO -->
         <ul class="navbar-nav ml-auto">
-            @if (User.Identity.IsAuthenticated)
+            @{
+                var authToken = Context.Request.Cookies["Token"];
+                var isAuthenticated = !string.IsNullOrEmpty(authToken);
+            }
+            @if (isAuthenticated)
             {
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button" data-toggle="dropdown">
-                    <i class="fas fa-user"></i> @User.Identity.Name
-                </a>
-                <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" asp-page="/Profile">Profile</a>
-                    <a class="dropdown-item text-danger" asp-page="/Logout">Logout</a>
-                </div>
-            </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user"></i> User
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" asp-page="/Profile">Profile</a></li>
+                        <li><a class="dropdown-item text-danger" asp-page="/Logout">Logout</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link text-white position-relative" href="#" id="notificationBell" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge badge-danger position-absolute" id="notificationCount"
+                              style=" display: none;">0</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationBell"
+                        style="min-width: 300px;">
+                        <li class="dropdown-header">Notifications</li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li id="notificationList">
+                            <div class="dropdown-item-text text-muted text-center">No new notifications</div>
+                        </li>
+                    </ul>
+                </li>
             }
             else
             {
-            <li class="nav-item">
-                <a class="btn btn-outline-light btn-login" asp-page="/Login">Login</a>
-            </li>
+                <li class="nav-item">
+                    <a class="btn btn-outline-light btn-login" asp-page="/Login">Login</a>
+                </li>
             }
         </ul>
     </div>
@@ -82,16 +156,57 @@
 <!-- FOOTER -->
 <footer class="footer bg-primary text-white py-4 mt-5">
     <div class="container text-center">
-        <p>&copy; 2025 Child Growth Tracker. All rights reserved.</p>
+        <p>© 2025 Child Growth Tracker. All rights reserved.</p>
         <a asp-page="/About" class="text-light mr-3">About Us</a>
         <a asp-page="/Contact" class="text-light">Contact</a>
     </div>
 </footer>
 
 <!-- Scripts -->
+
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script>
+    $(document).ready(function() {
+        let notifications = [
+            { id: 1, message: "New growth milestone added!", time: "5 minutes ago" },
+            { id: 2, message: "Consultation scheduled", time: "1 hour ago" }
+        ];
+
+        function updateNotificationCount() {
+            const count = notifications.length;
+            $("#notificationCount").text(count);
+            $("#notificationCount").toggle(count > 0);
+        }
+
+        function loadNotifications() {
+            const $list = $("#notificationList");
+            $list.empty();
+
+            if (notifications.length === 0) {
+                $list.append('<div class="dropdown-item-text text-muted text-center">No new notifications</div>');
+            } else {
+                notifications.forEach(notif => {
+                    $list.append(`
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <div>${notif.message}</div>
+                                <small class="text-muted">${notif.time}</small>
+                            </a>
+                        </li>
+                    `);
+                });
+            }
+        }
+
+        $("#notificationBell").on("show.bs.dropdown", function() {
+            loadNotifications();
+        });
+
+        updateNotificationCount();
+    });
+</script>
 @RenderSection("Scripts", required: false)
 </body>
 </html>
