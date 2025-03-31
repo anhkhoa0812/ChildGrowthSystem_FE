@@ -103,56 +103,56 @@
                 <li class="nav-item"><a class="nav-link" asp-page="/Consultations/Index">Consultation</a></li>
             </ul>
 
-        <!-- LOGIN / USER INFO -->
-        <ul class="navbar-nav ml-auto">
-            @{
-                var authToken = Context.Request.Cookies["Token"];
-                var userRole = Context.Request.Cookies["Role"];
-                var isAuthenticated = !string.IsNullOrEmpty(authToken) && userRole == "Member";
-            }
-            @if (isAuthenticated)
-            {
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-user"></i> User
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                        <li><a class="dropdown-item" asp-page="/Profile"><i class="fas fa-user-circle me-2"></i> Profile</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                            <form method="get" action="/Logout" class="d-flex justify-content-center">
-                                <button type="submit" class="dropdown-item text-danger">
-                                    <i class="fas fa-sign-out-alt me-2"></i> Logout
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link text-white position-relative" href="#" id="notificationBell" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-bell"></i>
-                        <span class="badge badge-danger position-absolute" id="notificationCount"
-                              style=" display: none;">0</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationBell"
-                        style="min-width: 300px;">
-                        <li class="dropdown-header">Notifications</li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li id="notificationList">
-                            <div class="dropdown-item-text text-muted text-center">No new notifications</div>
-                        </li>
-                    </ul>
-                </li>
-            }
-            else
-            {
-                <li class="nav-item">
-                    <a class="btn btn-outline-light btn-login" asp-page="/Login">Login</a>
-                </li>
-            }
-        </ul>
+
+            <!-- LOGIN / USER INFO -->
+            <ul class="navbar-nav ml-auto">
+                @{
+                    var authToken = Context.Request.Cookies["Token"];
+                    var isAuthenticated = !string.IsNullOrEmpty(authToken);
+                }
+                @if (isAuthenticated)
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user"></i> User
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                            <!-- Sử dụng asp-page để điều hướng đến Profile -->
+                            <li><a class="dropdown-item" asp-page="/Profile">Profile</a></li>
+                            <li><a class="dropdown-item text-danger" asp-page="/Logout">Logout</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link text-white position-relative" href="#" id="notificationBell" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge badge-danger position-absolute" id="notificationCount"
+                                  style="display: none;">0</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationBell"
+                            style="min-width: 300px;">
+                            <li class="dropdown-header">Notifications</li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li id="notificationList">
+                                <div class="dropdown-item-text text-muted text-center">No new notifications</div>
+                            </li>
+                        </ul>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="btn btn-outline-light btn-login" asp-page="/Login">Login</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <div class="container mt-4">
+        @RenderBody()
     </div>
 
     <!-- FOOTER -->
@@ -175,79 +175,39 @@
                 { id: 2, message: "Consultation scheduled", time: "1 hour ago" }
             ];
 
-<!-- Scripts -->
+            function updateNotificationCount() {
+                const count = notifications.length;
+                $("#notificationCount").text(count);
+                $("#notificationCount").toggle(count > 0);
+            }
 
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+            function loadNotifications() {
+                const $list = $("#notificationList");
+                $list.empty();
 
-<script>
-    $(document).ready(function() {
-        function fetchNotifications() {
-            $.ajax({
-                url: "https://localhost:7063/api/v1/notifications?page=1&size=30",
-                method: "GET",
-                dataType: "json",
-                success: function(response) {
-                    if (response.items && response.items.length > 0) {
-                        renderNotifications(response.items);
-                    } else {
-                        renderEmptyNotifications();
-                    }
-                },
-                error: function(error) {
-                    console.error("Failed to fetch notifications:", error);
-                    renderEmptyNotifications();
+                if (notifications.length === 0) {
+                    $list.append('<div class="dropdown-item-text text-muted text-center">No new notifications</div>');
+                } else {
+                    notifications.forEach(notif => {
+                        $list.append(`
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <div>${notif.message}</div>
+                                    <small class="text-muted">${notif.time}</small>
+                                </a>
+                            </li>
+                        `);
+                    });
                 }
-            });
-        }
+            }
 
-        function renderNotifications(notifications) {
-            const $list = $("#notificationList");
-            $list.empty();
-
-            notifications.forEach(notif => {
-                $list.append(`
-                    <li>
-                        <a class="dropdown-item" href="#">
-                            <div><strong>${notif.title}</strong></div>
-                            <div>${notif.message}</div>
-                            <small class="text-muted">${formatDate(notif.createdAt)}</small>
-                        </a>
-                    </li>
-                `);
+            $("#notificationBell").on("show.bs.dropdown", function() {
+                loadNotifications();
             });
 
-            updateNotificationCount(notifications.length);
-        }
-
-        function renderEmptyNotifications() {
-            const $list = $("#notificationList");
-            $list.empty();
-            $list.append('<div class="dropdown-item-text text-muted text-center">No new notifications</div>');
-            updateNotificationCount(0);
-        }
-
-        function updateNotificationCount(count) {
-            $("#notificationCount").text(count);
-            $("#notificationCount").toggle(count > 0);
-        }
-
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleString(); // Hiển thị ngày giờ theo định dạng của trình duyệt
-        }
-
-        // Gọi API khi mở dropdown thông báo
-        $("#notificationBell").on("click", function() {
-            fetchNotifications();
+            updateNotificationCount();
         });
-
-        // Gọi API ngay khi trang load
-        fetchNotifications();
-    });
-</script>
-
-@RenderSection("Scripts", required: false)
+    </script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
