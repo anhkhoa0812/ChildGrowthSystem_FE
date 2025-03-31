@@ -13,6 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Dto\Children\" />
       <Folder Include="Pages\Children\" />
       <Folder Include="wwwroot\images\" />
     </ItemGroup>
