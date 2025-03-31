@@ -1,0 +1,12 @@
+﻿@page
+@model ChildGrowth.WebPage.Pages.MembershipPlan.PaymentLinkModel
+
+@{
+    ViewData["Title"] = "Payment Link";
+}
+
+<div class="container my-5">
+    <div class="mt-4">
+        <iframe src="@Model.PaymentLink" width="100%" height="600px" frameborder="0"></iframe>
+    </div>
+</div>
