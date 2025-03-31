@@ -1,0 +1,23 @@
+@page
+@model ChildGrowth.WebPage.Pages.Consultations.Create
+
+@{
+    ViewData["Title"] = "Create Consultation";
+}
+
+<h2>Create Consultation</h2>
+
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label">Description</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
