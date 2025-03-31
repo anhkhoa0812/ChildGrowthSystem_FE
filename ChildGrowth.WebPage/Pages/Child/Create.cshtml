@@ -1,0 +1,94 @@
+﻿@page
+@model ChildGrowth.WebPage.Pages.Child.CreateModel
+@{
+    ViewData["Title"] = "Create Growth Record";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Create Growth Record</h2>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div class="form-group">
+                    <label for="RecordDate">Record Date</label>
+                    <input type="date" class="form-control" id="RecordDate" asp-for="GrowthRecord.RecordDate"
+                           value="@Model.GrowthRecord.RecordDate" />
+                </div>
+
+                <div class="form-group">
+                    <label for="Weight">Weight (kg)</label>
+                    <input type="number" class="form-control" id="Weight" asp-for="GrowthRecord.Weight" step="0.01" required />
+                </div>
+                <div class="form-group">
+                    <label for="Height">Height (cm)</label>
+                    <input type="number" class="form-control" id="Height" asp-for="GrowthRecord.Height" step="0.01" required />
+                </div>
+                <div class="form-group">
+                    <label for="Bmi">BMI</label>
+                    <input type="number" class="form-control" id="Bmi" asp-for="GrowthRecord.Bmi" step="0.01" required />
+                </div>
+                <div class="form-group">
+                    <label for="HeadCircumference">Head Circumference (cm)</label>
+                    <input type="number" class="form-control" id="HeadCircumference" asp-for="GrowthRecord.HeadCircumference" step="0.01" required />
+                </div>
+                <div class="form-group">
+                    <label for="Notes">Notes</label>
+                    <textarea class="form-control" id="Notes" asp-for="GrowthRecord.Notes"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="RecordedBy">Recorded By (User ID)</label>
+                    <input type="number" class="form-control" id="RecordedBy" asp-for="GrowthRecord.RecordedBy" value="@Model.GrowthRecord.RecordedBy" hidden />
+                </div>
+                <div class="form-group">
+                    <label for="AgeAtRecord">Age At Record (Months)</label>
+                    <input type="number" class="form-control" id="AgeAtRecord" asp-for="GrowthRecord.AgeAtRecord" required />
+                </div>
+                <div class="form-group">
+                    <label for="PercentileWeight">Percentile Weight</label>
+                    <input type="number" class="form-control" id="PercentileWeight" asp-for="GrowthRecord.PercentileWeight" required />
+                </div>
+                <div class="form-group">
+                    <label for="PercentileHeight">Percentile Height</label>
+                    <input type="number" class="form-control" id="PercentileHeight" asp-for="GrowthRecord.PercentileHeight" required />
+                </div>
+                <div class="form-group">
+                    <label for="PercentileBmi">Percentile BMI</label>
+                    <input type="number" class="form-control" id="PercentileBmi" asp-for="GrowthRecord.PercentileBmi" required />
+                </div>
+                <div class="form-group">
+                    <label for="TeethCount">Teeth Count</label>
+                    <input type="number" class="form-control" id="TeethCount" asp-for="GrowthRecord.TeethCount" required />
+                </div>
+                <div class="form-group">
+                    <label for="DevelopmentalMilestones">Developmental Milestones</label>
+                    <textarea class="form-control" id="DevelopmentalMilestones" asp-for="GrowthRecord.DevelopmentalMilestones"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="SleepPatterns">Sleep Patterns</label>
+                    <textarea class="form-control" id="SleepPatterns" asp-for="GrowthRecord.SleepPatterns"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="EatingHabits">Eating Habits</label>
+                    <textarea class="form-control" id="EatingHabits" asp-for="GrowthRecord.EatingHabits"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="ActivityLevel">Activity Level</label>
+                    <textarea class="form-control" id="ActivityLevel" asp-for="GrowthRecord.ActivityLevel"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="ChildId">Child ID</label>
+                    <input type="text" class="form-control" id="ChildId" asp-for="GrowthRecord.ChildId" value="@Model.GrowthRecord.ChildId" readonly />
+                </div>
+
+
+                <button type="submit" class="btn btn-primary">Create Record</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="mt-3">
+    <a href="@Url.Page("Index")" class="btn btn-secondary">Back to List</a>
+</div>

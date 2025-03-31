@@ -1,0 +1,26 @@
+﻿@if (Model.GrowthRecord != null)
+{
+    <div>
+        <h3>Record Information</h3>
+        <p><strong>Record Date:</strong> @Model.GrowthRecord.RecordDate</p>
+        <p><strong>Weight:</strong> @Model.GrowthRecord.Weight</p>
+        <p><strong>Height:</strong> @Model.GrowthRecord.Height</p>
+        <p><strong>BMI:</strong> @Model.GrowthRecord.Bmi</p>
+        <p><strong>Head Circumference:</strong> @Model.GrowthRecord.HeadCircumference</p>
+        <p><strong>Age At Record:</strong> @Model.GrowthRecord.AgeAtRecord</p>
+        <p><strong>Percentile Weight:</strong> @Model.GrowthRecord.PercentileWeight</p>
+        <p><strong>Percentile Height:</strong> @Model.GrowthRecord.PercentileHeight</p>
+        <p><strong>Percentile BMI:</strong> @Model.GrowthRecord.PercentileBmi</p>
+        <p><strong>Teeth Count:</strong> @Model.GrowthRecord.TeethCount</p>
+        <p><strong>Developmental Milestones:</strong> @Model.GrowthRecord.DevelopmentalMilestones</p>
+        <p><strong>Sleep Patterns:</strong> @Model.GrowthRecord.SleepPatterns</p>
+        <p><strong>Eating Habits:</strong> @Model.GrowthRecord.EatingHabits</p>
+        <p><strong>Activity Level:</strong> @Model.GrowthRecord.ActivityLevel</p>
+
+        <a href="@Url.Page("/Child/Create", new { childId = Model.GrowthRecord.ChildId })">Edit</a>
+    </div>
+}
+else
+{
+    <p>Growth record not found.</p>
+}

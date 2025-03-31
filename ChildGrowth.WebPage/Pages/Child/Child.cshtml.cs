@@ -2,29 +2,18 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Text.Json.Serialization;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace ChildGrowth.WebPage.Pages
+namespace ChildGrowth.WebPage.Pages.Child
 {
-    public class Paginate<T>
-    {
-        [JsonPropertyName("size")]
-        public int Size { get; set; }
-        [JsonPropertyName("page")]
-        public int Page { get; set; }
-        [JsonPropertyName("total")]
-        public int Total { get; set; }
-        [JsonPropertyName("totalPages")]
-        public int TotalPages { get; set; }
-        [JsonPropertyName("items")]
-        public IEnumerable<T> Items { get; set; }
-    }
-
+    // Lớp phản hồi từ API cho trẻ em
     public class ChildResponse
     {
         [JsonPropertyName("childId")]
         public int ChildId { get; set; }
+
         [JsonPropertyName("fullName")]
         public string FullName { get; set; }
 
@@ -46,69 +35,37 @@ namespace ChildGrowth.WebPage.Pages
 
         [JsonPropertyName("gender")]
         public string Gender { get; set; }
-        [JsonPropertyName("bloodType")]
-        public string BloodType { get; set; }
-        [JsonPropertyName("allergiesNotes")]
-        public string AllergiesNotes { get; set; }
-        [JsonPropertyName("medicalHistory")]
-        public string MedicalHistory { get; set; }
-
-        [JsonPropertyName("createdAt")]
-        public string CreatedAtString { get; set; } // Đổi sang string
-
-        [JsonIgnore]
-        public DateTime CreatedAt
-        {
-            get
-            {
-                if (DateTime.TryParse(CreatedAtString, out DateTime result))
-                {
-                    return result;
-                }
-                return DateTime.MinValue;
-            }
-        }
-
-        [JsonPropertyName("updatedAt")]
-        public string UpdatedAtString { get; set; } // Đổi sang string
-
-        [JsonIgnore]
-        public DateTime UpdatedAt
-        {
-            get
-            {
-                if (DateTime.TryParse(UpdatedAtString, out DateTime result))
-                {
-                    return result;
-                }
-                return DateTime.MinValue;
-            }
-        }
 
         [JsonPropertyName("status")]
         public string Status { get; set; }
+
         [JsonPropertyName("birthWeight")]
         public double BirthWeight { get; set; }
+
         [JsonPropertyName("birthHeight")]
         public double BirthHeight { get; set; }
-        [JsonPropertyName("preexistingConditions")]
-        public string PreexistingConditions { get; set; }
-        [JsonPropertyName("emergencyContact")]
-        public string EmergencyContact { get; set; }
-        [JsonPropertyName("insuranceInfo")]
-        public string InsuranceInfo { get; set; }
-        [JsonPropertyName("pediaticianInfo")]
-        public string PediaticianInfo { get; set; }
-        [JsonPropertyName("developmentalNotes")]
-        public string DevelopmentalNotes { get; set; }
-        [JsonPropertyName("photoUrl")]
-        public string PhotoUrl { get; set; }
-        [JsonPropertyName("consultations")]
-        public List<object> Consultations { get; set; }
-        [JsonPropertyName("growthRecords")]
-        public List<object> GrowthRecords { get; set; }
     }
 
+    // Mô hình trả về khi lấy dữ liệu trang
+    public class Paginate<T>
+    {
+        [JsonPropertyName("size")]
+        public int Size { get; set; }
+
+        [JsonPropertyName("page")]
+        public int Page { get; set; }
+
+        [JsonPropertyName("total")]
+        public int Total { get; set; }
+
+        [JsonPropertyName("totalPages")]
+        public int TotalPages { get; set; }
+
+        [JsonPropertyName("items")]
+        public IEnumerable<T> Items { get; set; }
+    }
+
+    // Mô hình dữ liệu cho trang ChildOverview
     public class ChildOverviewModel : PageModel
     {
         private readonly HttpClient _httpClient;
@@ -123,8 +80,9 @@ namespace ChildGrowth.WebPage.Pages
         public int CurrentPage { get; set; }
         public int PageSize { get; set; }
         public IList<ChildResponse> Children { get; set; } = new List<ChildResponse>();
-        public string ErrorMessage { get; set; } // Giữ nhưng không hiển thị
+        public string ErrorMessage { get; set; }
 
+        // Phương thức OnGetAsync để lấy dữ liệu từ API
         public async Task OnGetAsync()
         {
             try

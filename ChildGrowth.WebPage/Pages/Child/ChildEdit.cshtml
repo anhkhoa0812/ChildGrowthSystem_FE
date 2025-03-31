@@ -1,16 +1,17 @@
 ﻿@page
-@model ChildGrowth.WebPage.Pages.Child.ChildCreateModel
+@model ChildGrowth.WebPage.Pages.Child.ChildEditModel
 @{
-    ViewData["Title"] = "Create Child";
+    ViewData["Title"] = "Edit Child";
 }
 
 <div class="container mt-5">
     <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <h2 class="mb-0">Create New Child</h2>
+        <div class="card-header bg-warning text-white">
+            <h2 class="mb-0">Edit Child</h2>
         </div>
         <div class="card-body">
             <form method="post">
+                <input type="hidden" asp-for="Child.Id" />
                 <input type="hidden" asp-for="Child.ParentId" />
                 <div class="row">
                     <div class="col-md-6">
@@ -25,7 +26,6 @@
                         <div class="mb-3">
                             <label asp-for="Child.Gender" class="form-label">Gender</label>
                             <select asp-for="Child.Gender" class="form-select" required>
-                                <option value="">Select Gender</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
                                 <option value="Other">Other</option>
@@ -42,7 +42,6 @@
                         <div class="mb-3">
                             <label asp-for="Child.BloodType" class="form-label">Blood Type</label>
                             <select asp-for="Child.BloodType" class="form-select">
-                                <option value="">Select Blood Type</option>
                                 <option value="A">A</option>
                                 <option value="B">B</option>
                                 <option value="AB">AB</option>
@@ -87,12 +86,13 @@
                 </div>
                 <div class="d-flex justify-content-between mt-4">
                     <a asp-page="Child" class="btn btn-secondary">Back to List</a>
-                    <button type="submit" class="btn btn-success">Create Child</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
