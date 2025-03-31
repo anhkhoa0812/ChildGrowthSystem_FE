@@ -32,7 +32,7 @@ public class Login : PageModel
                     var cookieOptions = new CookieOptions
                     {
                         HttpOnly = true,
-                        Secure = true,
+                        Secure = false,
                         Expires = DateTimeOffset.UtcNow.AddMinutes(5)
                     };
                     HttpContext.Response.Cookies.Append("Token", result.AccessToken, cookieOptions);
