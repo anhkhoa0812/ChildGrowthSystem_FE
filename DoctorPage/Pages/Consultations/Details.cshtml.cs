@@ -15,6 +15,8 @@ public class Details : PageModel
     [BindProperty]
     public int ConsultationId { get; set; }
     public ConsultationDto Consultation { get; set; } = default!;
+    public string? ChartMode { get; set; }
+    public List<ChildRecordDto>? ChildRecord { get; set; }
     public async Task<IActionResult> OnGetAsync(int id) 
     {
         if (id == null)
@@ -37,6 +39,18 @@ public class Details : PageModel
                 {
                     var content = await response.Content.ReadAsStringAsync();
                     Consultation = JsonConvert.DeserializeObject<ConsultationDto>(content);
+                    if (Consultation.ChildId != null)
+                    {
+                        var childResponse =
+                            await httpClient.GetAsync(
+                                $"https://localhost:7063/api/v1/doctors/consultations/{Consultation.ConsultationId}/child-profile");
+                        if (childResponse.IsSuccessStatusCode)
+                        {
+                            var childContent = await childResponse.Content.ReadAsStringAsync();
+                            var childResult = JsonConvert.DeserializeObject<ChildDto>(childContent);
+                            ChildRecord = childResult.GrowthRecords;
+                        }
+                    }
                     return Page();
                 }
                 else
