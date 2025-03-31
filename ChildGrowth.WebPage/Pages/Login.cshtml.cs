@@ -3,6 +3,7 @@ using System.Security.Claims;
 using a;
 using ChildGrowth.WebPage.ApiEndpoint;
 using ChildGrowth.WebPage.Dto;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -29,6 +30,15 @@ public class Login : PageModel
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, result.UserId.ToString()),
+                        new Claim(ClaimTypes.Role, result.Role)
+                    };
+
+                    var claimsIdentity = new ClaimsIdentity(claims, "CookieAuth");
+                    await HttpContext.SignInAsync("CookieAuth", new ClaimsPrincipal(claimsIdentity));
+
                     var cookieOptions = new CookieOptions
                     {
                         HttpOnly = true,
