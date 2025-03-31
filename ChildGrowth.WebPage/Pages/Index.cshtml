@@ -11,7 +11,7 @@
         <h1 class="display-3">Empower Your Child's Growth Journey</h1>
         <p class="lead">Track, analyze, and consult with experts for a healthy future.</p>
         <a class="btn btn-primary btn-lg mr-2" asp-page="/MembershipPlan" role="button">Explore Membership</a>
-        <a class="btn btn-outline-light btn-lg" asp-page="/GrowthTracking" role="button">Start Tracking</a>
+        <a class="btn btn-outline-light btn-lg" asp-page="/Child" role="button">Start Tracking</a>
     </div>
 </div>
 
@@ -24,7 +24,7 @@
                  class="mb-3" style="width:80px;height:80px;">
             <h4>Growth Tracking</h4>
             <p>Monitor weight, height, and BMI with interactive charts and real-time alerts.</p>
-            <a class="btn btn-outline-primary" asp-page="/GrowthTracking">Learn More</a>
+            <a class="btn btn-outline-primary" asp-page="/Child">Learn More</a>
         </div>
         <!-- Membership Plans -->
         <div class="col-md-4 text-center mb-4">
@@ -45,13 +45,30 @@
     </div>
 </div>
 
-<!-- MORE FEATURES / BLOG / FAQ / DASHBOARD -->
+<!-- MORE FEATURES (những trang khác yêu cầu đăng nhập, ngoài Blog) -->
 <div class="py-5 text-center bg-light">
     <h2>More Features</h2>
     <p>Stay informed with our blog, share data with doctors, manage your child's growth history, and more!</p>
-    <div class="mt-4">
-        <a class="btn btn-success mr-2" asp-page="/Blog" role="button">Visit Blog</a>
-        <a class="btn btn-info mr-2" asp-page="/FAQ" role="button">Read FAQ</a>
-        <a class="btn btn-warning" asp-page="/Dashboard" role="button">Go to Dashboard</a>
+    <div class="row mt-4">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-blog fa-3x mb-3"></i>
+                    <h5 class="card-title">Blog</h5>
+                    <p class="card-text">Read articles and tips on child growth.</p>
+                    <a class="btn btn-primary" asp-page="/Blog">Visit Blog</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-tachometer-alt fa-3x mb-3"></i>
+                    <h5 class="card-title">Dashboard</h5>
+                    <p class="card-text">Monitor your child's growth metrics.</p>
+                    <a class="btn btn-primary" asp-page="/Child">Go to Dashboard</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

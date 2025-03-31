@@ -1,0 +1,62 @@
+﻿@page "{id:int}"
+@model ChildGrowth.WebPage.Pages.BlogDetailModel
+@{
+    ViewData["Title"] = Model.Blog?.Title ?? "Blog Detail";
+}
+
+<style>
+    .blog-image {
+        width: 100%;
+        height: auto; /* Hiển thị toàn bộ ảnh */
+    }
+
+    .blog-content {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        padding: 20px;
+        background-color: #f8f9fa; /* Nền nhẹ */
+        border-left: 4px solid #007bff; /* Đường viền nổi bật bên trái */
+        margin-top: 20px;
+    }
+
+    .blog-meta {
+        margin-bottom: 15px;
+    }
+
+    .stats {
+        margin-top: 20px;
+        font-size: 0.95rem;
+        color: #6c757d;
+    }
+</style>
+
+<div class="container my-4">
+    @if (Model.Blog != null)
+    {
+        <h1 class="mb-3">@Model.Blog.Title</h1>
+        <div class="blog-meta">
+            <p>
+                <strong>Published on:</strong> @Model.Blog.PublishDate.ToString("dd/MM/yyyy")
+                @if (Model.Blog.UpdatedDate.HasValue)
+                {
+                    <br />
+
+                    <strong>Updated on:</strong> @Model.Blog.UpdatedDate.Value.ToString("dd/MM/yyyy")
+                }
+            </p>
+        </div>
+        <img src="@Model.Blog.ImageUrl" alt="Blog Image" class="img-fluid blog-image mb-4" />
+        <div class="blog-content">
+            @Html.Raw(Model.Blog.Content)
+        </div>
+        <div class="stats">
+            <p>
+                <strong>Views:</strong> @Model.Blog.ViewCount
+            </p>
+        </div>
+    }
+    else
+    {
+        <p>Unable to load blog details.</p>
+    }
+</div>

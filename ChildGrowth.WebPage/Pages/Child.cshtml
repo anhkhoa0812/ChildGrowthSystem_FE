@@ -1,0 +1,66 @@
+﻿@page
+@model ChildGrowth.WebPage.Pages.ChildModel
+@{
+    ViewData["Title"] = "Child - Growth Records";
+}
+
+<div class="d-flex">
+    <nav class="sidebar bg-light p-3" style="width: 250px; min-height: 100vh;">
+        <h4 class="text-primary">ChildGrowth</h4>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="/Profile">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/Child">Child</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/Consultation">Consultation</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container my-5 flex-grow-1">
+        <div class="card shadow-sm">
+            <div class="card-header bg-success text-white">
+                <h2 class="mb-0">Child Growth Records</h2>
+            </div>
+            <div class="card-body">
+                @if (Model.Children != null && Model.Children.Any())
+                {
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Height</th>
+                                <th>Weight</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var child in Model.Children)
+                            {
+                                <tr>
+                                    <td>@child.Name</td>
+                                    <td>@child.Age</td>
+                                    <td>@child.Height cm</td>
+                                    <td>@child.Weight kg</td>
+                                    <td>
+                                        <a href="/Child/Details/@child.Id" class="btn btn-info btn-sm">View</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="alert alert-warning" role="alert">
+                        No child growth records available.
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
