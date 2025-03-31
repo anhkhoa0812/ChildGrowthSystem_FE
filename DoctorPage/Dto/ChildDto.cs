@@ -39,4 +39,6 @@ public class ChildDto
     public string? DevelopmentalNotes { get; set; }
 
     public string? PhotoUrl { get; set; }
+    
+    public List<ChildRecordDto>? GrowthRecords { get; set; }
 }
