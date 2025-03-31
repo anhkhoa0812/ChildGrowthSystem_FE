@@ -1,4 +1,4 @@
-namespace DoctorPage.Dto;
+namespace ChildGrowth.WebPage.Dto.Consultation;
 
 public class ChildDto
 {
@@ -40,5 +40,4 @@ public class ChildDto
 
     public string? PhotoUrl { get; set; }
     
-    public List<ChildRecordDto>? GrowthRecords { get; set; }
 }

@@ -49,8 +49,7 @@ namespace ChildGrowth.WebPage.Pages.MembershipPlan
                     if (paymentResponse.IsSuccessStatusCode)
                     {
                         var paymentLink = await paymentResponse.Content.ReadAsStringAsync();
-                        // Assuming the response is a plain text link
-                        return Redirect(paymentLink);
+                        return RedirectToPage("/MembershipPlan/PaymentLink", new { PaymentLink = paymentLink });
                     }
                     else
                     {
