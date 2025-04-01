@@ -1,0 +1,71 @@
+﻿@page
+@model ChildGrowth.WebPage.Pages.MembershipPlan.PaymentSuccessModel
+
+@{
+ViewData["Title"] = "Payment Success";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/site.css">
+    <style>
+        .success-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f9fa;
+        }
+        .success-card {
+            max-width: 500px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            text-align: center;
+        }
+        .success-icon {
+            font-size: 50px;
+            color: #28a745;
+        }
+        .success-message {
+            font-size: 24px;
+            margin-top: 20px;
+            color: #333;
+        }
+        .success-details {
+            font-size: 16px;
+            margin-top: 10px;
+            color: #666;
+        }
+        .btn-home {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="success-container">
+    <div class="success-card">
+        <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="success-message">
+            Payment Successful!
+        </div>
+        <div class="success-details">
+            Thank you for your payment. Your transaction has been completed successfully.
+        </div>
+        <a href="/" class="btn btn-primary btn-home">Go to Home</a>
+    </div>
+</div>
+
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
