@@ -15,6 +15,7 @@ namespace ChildGrowth.WebPage.Pages.MembershipPlan
 
         [BindProperty(SupportsGet = true)]
         public int PlanId { get; set; }
+        public string PlanName { get; set; }
 
         public async Task OnGetAsync()
         {
@@ -25,6 +26,9 @@ namespace ChildGrowth.WebPage.Pages.MembershipPlan
                 httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
                 var response = await httpClient.GetFromJsonAsync<UserInfo>($"{ApiEndpointUrl.Url}users/{userId}");
                 User = response;
+                
+                var planResponse = await httpClient.GetFromJsonAsync<Dto.MembershipPlan>($"{ApiEndpointUrl.Url}membership-plans/{PlanId}");
+                PlanName = planResponse.PlanName;
             }
         }
 
@@ -49,7 +53,7 @@ namespace ChildGrowth.WebPage.Pages.MembershipPlan
                     if (paymentResponse.IsSuccessStatusCode)
                     {
                         var paymentLink = await paymentResponse.Content.ReadAsStringAsync();
-                        return RedirectToPage("/MembershipPlan/PaymentLink", new { PaymentLink = paymentLink });
+                        return Redirect(paymentLink); // Redirect to the external payment link
                     }
                     else
                     {
